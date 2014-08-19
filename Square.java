@@ -1,7 +1,7 @@
 public class Square {
-    private int x;
-    private int y;
-    private Piece piece;
+    public int x;
+    public int y;
+    public Piece piece;
 
     public Square(int x, int y, Piece piece) {
         this.x = x;
