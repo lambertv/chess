@@ -14,4 +14,8 @@ public class Move {
         this.capture_x = end_x;
         this.capture_y = end_y;
     }
+
+    public String toString() {
+        return ("(" + start_x + ", " + start_y + ") to (" + end_x + ", " + end_y + ")");
+    }
 }

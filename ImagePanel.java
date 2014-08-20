@@ -54,9 +54,9 @@ public class ImagePanel extends JPanel {
         this.game_board = game_board;
     }
 
-    public void update(Board game_board) {
-        this.game_board = game_board;
-    }
+    public void update(Board new_game_board) {
+        this.game_board = new_game_board;
+   }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -80,11 +80,11 @@ public class ImagePanel extends JPanel {
                 } else if (square.piece.type == PieceType.Knight) {
                     g.drawImage(black_knight_image, 32+square.x*32, 
                                 32+square.y*32, null);
-                } else {               
+                } else if (square.piece.type == PieceType.Bishop) {               
                     g.drawImage(black_bishop_image, 32+square.x*32, 
                                 32+square.y*32, null);
                 }
-            } else {
+            } else if (square.piece.color == PieceColor.White) {
                 if (square.piece.type == PieceType.King) {
                     g.drawImage(white_king_image, 32+square.x*32, 
                                 32+square.y*32, null);
@@ -100,7 +100,7 @@ public class ImagePanel extends JPanel {
                 } else if (square.piece.type == PieceType.Knight) {
                     g.drawImage(white_knight_image, 32+square.x*32, 
                                 32+square.y*32, null);
-                } else {               
+                } else if (square.piece.type == PieceType.Bishop) {               
                     g.drawImage(white_bishop_image, 32+square.x*32, 
                                 32+square.y*32, null);
                 }

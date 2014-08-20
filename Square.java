@@ -13,4 +13,8 @@ public class Square {
         this.piece = piece;
     }
 
+    public String toString() {
+        return (piece.type.toString() + " at (" + x + ", " + y + ")");
+    }
+
 }

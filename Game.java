@@ -4,13 +4,14 @@ public class Game {
     private Board board;
     private PieceColor turn;
     private LinkedList<Move> possible_moves;
-    private Piece selected_piece;
+    private Square selected_square;
     private Move selected_move;
 
     public Game() {
         board = new Board();
         turn = PieceColor.White;
         possible_moves = new LinkedList<Move>();
+        printBoard();
     }
 
     public Board getBoard() {
@@ -18,9 +19,10 @@ public class Game {
     }
 
     public void updatePossibleMoves() {
-        switch (selected_piece.type) {
+        switch (selected_square.piece.type) {
             case Pawn:
-                //get pawn moves
+                possible_moves.add(new Move(selected_square.x, selected_square.y, selected_square.x, selected_square.y+1));
+                possible_moves.add(new Move(selected_square.x, selected_square.y, selected_square.x, selected_square.y-1));
                 break;
             case Rook:
                 //get rook moves
@@ -41,31 +43,41 @@ public class Game {
                 //no moves
                 break;
         }
+        System.out.println("Created new movelist: ");
+        for (Move move : possible_moves) {
+            System.out.println(move.toString());
+        }
         return;
     }
 
     public void setSelectedPiece(int x, int y) {
-        selected_piece = board.getPieceAt(x, y);
+        selected_square = board.getSquareAt(x, y);
+        System.out.printf("Selected Piece at %d, %d\n", x, y);
+        updatePossibleMoves();
     }
 
     public void deselectPiece() {
-        selected_piece = null;
+        selected_square = null;
+        possible_moves.clear();
+        System.out.println("Deselected Piece");
     }
 
     public boolean pieceSelected() {
-        return (selected_piece != null);
+        return (selected_square != null);
     }
 
     public void setSelectedMove(int x, int y) {
         for (Move move : possible_moves) {
             if (move.end_x == x && move.end_y == y) {
                 selected_move = move;
+                System.out.println("Selected move: " + selected_move.toString());
             }
         }
     }
 
     public void deselectMove() {
         selected_move = null;
+        System.out.println("Move deselected");
     }
 
     public Move getSelectedMove() {
@@ -76,18 +88,21 @@ public class Game {
         board.removePiece(selected_move.end_x, selected_move.end_y);
         board.movePiece(selected_move.start_x, selected_move.start_y,
                         selected_move.end_x, selected_move.end_y);
-
+        System.out.println("Made selected move");
+        printBoard();
         deselectPiece();
         deselectMove();
-    }
-
-    public boolean isValidMove(int end_x, int end_y) {
-        //implement
-        return true;
     }
 
     public boolean isPieceAt(int x, int y) {
         return board.isPieceAt(x,y);
     }
-
+    
+    public void printBoard() {
+        for (Square space : board.getSquares()) {
+            if (space.piece.type != PieceType.None) {
+                System.out.println(space.toString());
+            }
+        }
+    }
 }

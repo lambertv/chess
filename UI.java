@@ -49,18 +49,24 @@ public class UI extends JPanel implements MouseListener {
         int y = (e.getY()-32)/32;
         if (inClickableArea(e.getX(), e.getY()) && 
             !chess_game.pieceSelected() && chess_game.isPieceAt(x, y)) {
+            System.out.println("SELECTING PIECE");
             chess_game.setSelectedPiece(x,y);
-        } else if (inClickableArea(x,y) && 
-                   chess_game.isValidMove(x, y)) {
+        } else if (inClickableArea(e.getX(),e.getY()) && chess_game.pieceSelected()) {
+            System.out.println("SELECT MOVE?");
             chess_game.setSelectedMove(x, y);
             if (chess_game.getSelectedMove() != null) {
+                System.out.println("SELECTING MOVE");
                 chess_game.makeSelectedMove();
             } else {
+                System.out.println("MOVE DOESN'T EXIST");
                 chess_game.deselectPiece();
             }
         } else {
+            System.out.println("NOT IN CLICKABLE AREA OR IS NOT VALID SELECTION");
             chess_game.deselectPiece();
         }
+        board_panel.update(chess_game.getBoard());
+        board_panel.repaint();
     }
 
     public void mouseEntered(MouseEvent e) {
