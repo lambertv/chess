@@ -18,9 +18,12 @@ public class Game {
         return board;
     }
 
+    //clusterfuck of code
     public void updatePossibleMoves() {
         int x = selected_square.x;
         int y = selected_square.y;
+        PieceColor color = selected_square.piece.color;
+        int count = 1;
         switch (selected_square.piece.type) {
             case Pawn:
                 int direction = (selected_square.piece.color == PieceColor.Black) ? 1 : -1; 
@@ -41,8 +44,6 @@ public class Game {
                 }
                 break;
             case Rook:
-                int count = 1;
-                PieceColor color = selected_square.piece.color;
                 while (x+count < 8 && board.getSquareAt(x+count,y).piece.color != color) {
                     possible_moves.add(new Move(x,y,x+count,y));
                     if (board.getSquareAt(x+count,y).piece.type != PieceType.None) {
@@ -79,13 +80,106 @@ public class Game {
                 //get knight moves
                 break;
             case Bishop:
-                //get bishop moves
+                count = 1;
+                while (x+count < 8 && y+count < 8 && board.getSquareAt(x+count,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y+count));
+                    if (board.getSquareAt(x+count,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && y-count >= 0 && board.getSquareAt(x-count,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y-count));
+                    if (board.getSquareAt(x-count,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x+count < 8 && y-count >= 0 && board.getSquareAt(x+count,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y-count));
+                    if (board.getSquareAt(x+count,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && y+count < 8 && board.getSquareAt(x-count,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y+count));
+                    if (board.getSquareAt(x-count,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
                 break;
             case King:
                 //get king moves
                 break;
             case Queen:
-                //get queen moves
+                while (x+count < 8 && board.getSquareAt(x+count,y).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y));
+                    if (board.getSquareAt(x+count,y).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && board.getSquareAt(x-count,y).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y));
+                    if (board.getSquareAt(x-count,y).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (y+count < 8 && board.getSquareAt(x,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x,y+count));
+                    if (board.getSquareAt(x,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (y-count >= 0 && board.getSquareAt(x,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x,y-count));
+                    if (board.getSquareAt(x,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x+count < 8 && y+count < 8 && board.getSquareAt(x+count,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y+count));
+                    if (board.getSquareAt(x+count,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && y-count >= 0 && board.getSquareAt(x-count,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y-count));
+                    if (board.getSquareAt(x-count,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x+count < 8 && y-count >= 0 && board.getSquareAt(x+count,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y-count));
+                    if (board.getSquareAt(x+count,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && y+count < 8 && board.getSquareAt(x-count,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y+count));
+                    if (board.getSquareAt(x-count,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
                 break;
             default:
                 //no moves
