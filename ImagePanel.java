@@ -13,6 +13,7 @@ import java.util.LinkedList;
 public class ImagePanel extends JPanel {
 
     private Board game_board;
+    private LinkedList<Move> possible_moves;
 
     private BufferedImage board_image;
 
@@ -29,6 +30,8 @@ public class ImagePanel extends JPanel {
     private BufferedImage white_rook_image;
     private BufferedImage white_knight_image;
     private BufferedImage white_bishop_image;
+
+    private BufferedImage highlight;
 
     public ImagePanel(Board game_board) {
         try {
@@ -47,15 +50,20 @@ public class ImagePanel extends JPanel {
             white_rook_image = ImageIO.read(new File("white_rook.png"));
             white_knight_image = ImageIO.read(new File("white_knight.png"));
             white_bishop_image = ImageIO.read(new File("white_bishop.png"));
+
+            highlight = ImageIO.read(new File("highlight.png"));
+
         } catch (IOException ex) {
             System.out.println(ex);
         }
 
         this.game_board = game_board;
+        this.possible_moves = new LinkedList<Move>();
     }
 
-    public void update(Board new_game_board) {
+    public void update(Board new_game_board, LinkedList<Move> possible_moves) {
         this.game_board = new_game_board;
+        this.possible_moves = possible_moves;
    }
 
     @Override
@@ -105,6 +113,10 @@ public class ImagePanel extends JPanel {
                                 32+square.y*32, null);
                 }
             }
+        }
+
+        for (Move move : possible_moves) {
+            g.drawImage(highlight, 32+move.end_x*32, 32+move.end_y*32, null);
         }
     }
 }

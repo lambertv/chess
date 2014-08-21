@@ -19,13 +19,61 @@ public class Game {
     }
 
     public void updatePossibleMoves() {
+        int x = selected_square.x;
+        int y = selected_square.y;
         switch (selected_square.piece.type) {
             case Pawn:
-                possible_moves.add(new Move(selected_square.x, selected_square.y, selected_square.x, selected_square.y+1));
-                possible_moves.add(new Move(selected_square.x, selected_square.y, selected_square.x, selected_square.y-1));
+                int direction = (selected_square.piece.color == PieceColor.Black) ? 1 : -1; 
+                if (board.getSquareAt(x+1, y+direction).piece.type != PieceType.None &&
+                    board.getSquareAt(x+1, y+direction).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x+1,y+direction));
+                }
+                if (board.getSquareAt(x-1,y+direction).piece.type != PieceType.None &&
+                    board.getSquareAt(x-1,y+direction).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x-1,y+direction));
+                }
+                if (board.getSquareAt(x,y+direction).piece.type == PieceType.None) {
+                    possible_moves.add(new Move(x,y,x,y+direction));
+                    if (board.getSquareAt(x,y+direction).piece.type == PieceType.None &&
+                        selected_square.piece.is_first_move) {
+                        possible_moves.add(new Move(x,y,x,y+2*direction));
+                    }
+                }
                 break;
             case Rook:
-                //get rook moves
+                int count = 1;
+                PieceColor color = selected_square.piece.color;
+                while (x+count < 8 && board.getSquareAt(x+count,y).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x+count,y));
+                    if (board.getSquareAt(x+count,y).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (x-count >= 0 && board.getSquareAt(x-count,y).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x-count,y));
+                    if (board.getSquareAt(x-count,y).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (y+count < 8 && board.getSquareAt(x,y+count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x,y+count));
+                    if (board.getSquareAt(x,y+count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
+                count = 1;
+                while (y-count >= 0 && board.getSquareAt(x,y-count).piece.color != color) {
+                    possible_moves.add(new Move(x,y,x,y-count));
+                    if (board.getSquareAt(x,y-count).piece.type != PieceType.None) {
+                        count = 8;
+                    }
+                    count++;
+                }
                 break;
             case Knight:
                 //get knight moves
@@ -84,7 +132,12 @@ public class Game {
         return selected_move;
     }
 
+    public LinkedList<Move> getPossibleMoves() {
+        return possible_moves;
+    }
+
     public void makeSelectedMove() {        
+        selected_square.piece.is_first_move = false;
         board.removePiece(selected_move.end_x, selected_move.end_y);
         board.movePiece(selected_move.start_x, selected_move.start_y,
                         selected_move.end_x, selected_move.end_y);

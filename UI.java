@@ -65,7 +65,7 @@ public class UI extends JPanel implements MouseListener {
             System.out.println("NOT IN CLICKABLE AREA OR IS NOT VALID SELECTION");
             chess_game.deselectPiece();
         }
-        board_panel.update(chess_game.getBoard());
+        board_panel.update(chess_game.getBoard(), chess_game.getPossibleMoves());
         board_panel.repaint();
     }
 
