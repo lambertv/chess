@@ -2,20 +2,24 @@ import java.util.LinkedList;
 
 public class Game {
     private Board board;
-    private PieceColor turn;
+    private PieceColor turn_color;
     private LinkedList<Move> possible_moves;
     private Square selected_square;
     private Move selected_move;
 
     public Game() {
         board = new Board();
-        turn = PieceColor.White;
+        turn_color = PieceColor.White;
         possible_moves = new LinkedList<Move>();
         printBoard();
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean inBounds(int x, int y) {
+        return (x >= 0 && x < 8 && y >= 0 && y < 8);
     }
 
     //clusterfuck of code
@@ -27,17 +31,21 @@ public class Game {
         switch (selected_square.piece.type) {
             case Pawn:
                 int direction = (selected_square.piece.color == PieceColor.Black) ? 1 : -1; 
-                if (board.getSquareAt(x+1, y+direction).piece.type != PieceType.None &&
+                if (inBounds(x+1,y+direction) &&
+                    board.getSquareAt(x+1, y+direction).piece.type != PieceType.None &&
                     board.getSquareAt(x+1, y+direction).piece.color != selected_square.piece.color) {
                     possible_moves.add(new Move(x,y,x+1,y+direction));
                 }
-                if (board.getSquareAt(x-1,y+direction).piece.type != PieceType.None &&
+                if (inBounds(x-1,y+direction) &&
+                    board.getSquareAt(x-1,y+direction).piece.type != PieceType.None &&
                     board.getSquareAt(x-1,y+direction).piece.color != selected_square.piece.color) {
                     possible_moves.add(new Move(x,y,x-1,y+direction));
                 }
-                if (board.getSquareAt(x,y+direction).piece.type == PieceType.None) {
+                if (inBounds(x,y+direction) &&
+                    board.getSquareAt(x,y+direction).piece.type == PieceType.None) {
                     possible_moves.add(new Move(x,y,x,y+direction));
-                    if (board.getSquareAt(x,y+direction).piece.type == PieceType.None &&
+                    if (inBounds(x,y+2*direction) &&
+                        board.getSquareAt(x,y+2*direction).piece.type == PieceType.None &&
                         selected_square.piece.is_first_move) {
                         possible_moves.add(new Move(x,y,x,y+2*direction));
                     }
@@ -77,7 +85,39 @@ public class Game {
                 }
                 break;
             case Knight:
-                //get knight moves
+                if (inBounds(x+1,y+2) &&
+                    board.getSquareAt(x+1, y+2).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x+1,y+2));
+                }
+                if (inBounds(x+2,y+1) &&
+                    board.getSquareAt(x+2, y+1).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x+2,y+1));
+                }
+                if (inBounds(x-2,y-1) &&
+                    board.getSquareAt(x-2, y-1).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x-2,y-1));
+                }
+                if (inBounds(x-1,y-2) &&
+                    board.getSquareAt(x-1, y-2).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x-1,y-2));
+                }
+                if (inBounds(x+1,y-2) &&
+                    board.getSquareAt(x+1, y-2).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x+1,y-2));
+                }
+                if (inBounds(x-1,y+2) &&
+                    board.getSquareAt(x-1, y+2).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x-1,y+2));
+                }
+                if (inBounds(x+2,y-1) &&
+                    board.getSquareAt(x+2, y-1).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x+2,y-1));
+                }
+                if (inBounds(x-2,y+1) &&
+                    board.getSquareAt(x-2, y+1).piece.color != selected_square.piece.color) {
+                    possible_moves.add(new Move(x,y,x-2,y+1));
+                }
+
                 break;
             case Bishop:
                 count = 1;
@@ -114,7 +154,38 @@ public class Game {
                 }
                 break;
             case King:
-                //get king moves
+                if (inBounds(x+1,y) &&
+                    board.getSquareAt(x+1,y).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x+1,y));
+                }
+                if (inBounds(x-1,y) &&
+                    board.getSquareAt(x-1,y).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x-1,y));
+                }
+                if (inBounds(x,y+1) &&
+                    board.getSquareAt(x,y+1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x,y+1));
+                }
+                if (inBounds(x+1,y+1) &&
+                    board.getSquareAt(x+1,y+1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x+1,y+1));
+                }
+                if (inBounds(x-1,y+1) &&
+                    board.getSquareAt(x-1,y+1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x-1,y+1));
+                }
+                if (inBounds(x+1,y-1) &&
+                    board.getSquareAt(x+1,y-1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x+1,y-1));
+                }
+                if (inBounds(x,y-1) &&
+                    board.getSquareAt(x,y-1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x,y-1));
+                }
+                if (inBounds(x-1,y-1) &&
+                    board.getSquareAt(x-1,y-1).piece.color != color) {
+                        possible_moves.add(new Move(x,y,x-1,y-1));
+                }
                 break;
             case Queen:
                 while (x+count < 8 && board.getSquareAt(x+count,y).piece.color != color) {
@@ -192,6 +263,10 @@ public class Game {
         return;
     }
 
+    public PieceColor getTurnColor() {
+        return turn_color;
+    }
+
     public void setSelectedPiece(int x, int y) {
         selected_square = board.getSquareAt(x, y);
         System.out.printf("Selected Piece at %d, %d\n", x, y);
@@ -236,6 +311,11 @@ public class Game {
         board.movePiece(selected_move.start_x, selected_move.start_y,
                         selected_move.end_x, selected_move.end_y);
         System.out.println("Made selected move");
+        if (turn_color == PieceColor.Black) {
+            turn_color = PieceColor.White;
+        } else {
+            turn_color = PieceColor.Black;
+        }
         printBoard();
         deselectPiece();
         deselectMove();

@@ -48,6 +48,7 @@ public class UI extends JPanel implements MouseListener {
         int x = (e.getX()-32)/32;
         int y = (e.getY()-32)/32;
         if (inClickableArea(e.getX(), e.getY()) && 
+            chess_game.getBoard().getSquareAt(x,y).piece.color == chess_game.getTurnColor() &&
             !chess_game.pieceSelected() && chess_game.isPieceAt(x, y)) {
             System.out.println("SELECTING PIECE");
             chess_game.setSelectedPiece(x,y);
